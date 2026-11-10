@@ -1,0 +1,3 @@
+period,is_peak,sample_count,mean_actual,mean_pred,MAE,RMSE,WAPE_%,R2
+Peak Period (07-09 & 17-19),1,1530,29.8,29.8,2.73,3.552,9.16,0.9206
+Off-Peak Period,0,1084,29.4,29.3,2.498,3.321,8.51,0.888

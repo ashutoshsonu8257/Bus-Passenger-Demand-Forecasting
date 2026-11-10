@@ -1,0 +1,93 @@
+{
+  "models": {
+    "Historical_Baseline": {
+      "val": {
+        "MAE": 7.739,
+        "RMSE": 9.541,
+        "WAPE_percent": 26.41,
+        "R2": 0.259,
+        "MAPE_percent": 41.93,
+        "mean_residual": -0.436,
+        "p90_absolute_error": 15.716
+      },
+      "test": {
+        "MAE": 8.188,
+        "RMSE": 10.051,
+        "WAPE_percent": 27.64,
+        "R2": 0.245,
+        "MAPE_percent": 42.9,
+        "mean_residual": -0.117,
+        "p90_absolute_error": 16.678
+      }
+    },
+    "Ridge_Regression": {
+      "val": {
+        "MAE": 2.755,
+        "RMSE": 3.574,
+        "WAPE_percent": 9.4,
+        "R2": 0.896,
+        "MAPE_percent": 11.02,
+        "mean_residual": -0.081,
+        "p90_absolute_error": 5.776
+      },
+      "test": {
+        "MAE": 2.783,
+        "RMSE": 3.613,
+        "WAPE_percent": 9.4,
+        "R2": 0.9025,
+        "MAPE_percent": 10.51,
+        "mean_residual": -0.015,
+        "p90_absolute_error": 5.7
+      }
+    },
+    "Random_Forest": {
+      "val": {
+        "MAE": 2.663,
+        "RMSE": 3.46,
+        "WAPE_percent": 9.09,
+        "R2": 0.9025,
+        "MAPE_percent": 10.33,
+        "mean_residual": -0.054,
+        "p90_absolute_error": 5.585
+      },
+      "test": {
+        "MAE": 2.644,
+        "RMSE": 3.456,
+        "WAPE_percent": 8.93,
+        "R2": 0.9108,
+        "MAPE_percent": 10.0,
+        "mean_residual": -0.012,
+        "p90_absolute_error": 5.529
+      }
+    },
+    "LightGBM": {
+      "val": {
+        "MAE": 2.649,
+        "RMSE": 3.426,
+        "WAPE_percent": 9.04,
+        "R2": 0.9045,
+        "MAPE_percent": 10.53,
+        "mean_residual": -0.169,
+        "p90_absolute_error": 5.619
+      },
+      "test": {
+        "MAE": 2.634,
+        "RMSE": 3.458,
+        "WAPE_percent": 8.89,
+        "R2": 0.9107,
+        "MAPE_percent": 9.88,
+        "mean_residual": 0.009,
+        "p90_absolute_error": 5.641
+      }
+    }
+  },
+  "champion_model": "LightGBM",
+  "test_improvement": {
+    "baseline_wape": 27.64,
+    "champion_wape": 8.89,
+    "wape_reduction_pct": 67.84,
+    "baseline_mae": 8.188,
+    "champion_mae": 2.634,
+    "mae_reduction": 5.554
+  }
+}

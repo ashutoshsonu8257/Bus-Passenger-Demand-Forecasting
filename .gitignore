@@ -1,0 +1,28 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+
+# Testing & Caching
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Sensitive files
+.env
+*.pem
+*.key
+
+# IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
