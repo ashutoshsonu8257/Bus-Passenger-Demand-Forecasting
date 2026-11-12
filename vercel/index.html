@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>busPulse — Smart Bus Demand &amp; Seat Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #d84e55;
+      --red-dark: #b9383f;
+      --red-soft: #fff1f2;
+      --red-border: #fecdd3;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --amber: #d97706;
+      --amber-soft: #fef3c7;
+      --rose: #e11d48;
+      --rose-soft: #ffe4e6;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 10px 28px rgba(15, 23, 42, 0.10);
+      --shadow-lg: 0 18px 42px rgba(15, 23, 42, 0.16);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navbar */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 1px 10px rgba(15, 23, 42, 0.04);
+    }
+    .nav-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #d84e55 0%, #ef4444 100%);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 18px;
+      box-shadow: 0 6px 14px rgba(216, 78, 85, 0.28);
+      flex-shrink: 0;
+    }
+    .brand-text h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.18rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .brand-text h1 span { color: var(--red); }
+    .brand-text p {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-tab {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 7px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .nav-tab:hover { background: #f1f5f9; color: var(--ink); }
+    .nav-tab.active {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+      color: var(--red-dark);
+    }
+
+    .model-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .dot-live {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.18);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.22); }
+      50% { box-shadow: 0 0 0 6px rgba(22, 163, 74, 0.05); }
+    }
+
+    /* Hero Search Banner */
+    .hero {
+      background: linear-gradient(125deg, #b9383f 0%, #d84e55 52%, #e9646b 100%);
+      color: #ffffff;
+      padding: 28px 20px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 85% 20%, rgba(255,255,255,0.14), transparent 45%),
+                  radial-gradient(circle at 12% 85%, rgba(0,0,0,0.12), transparent 42%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.16);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .hero h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.45rem, 2.8vw, 2.15rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 6px;
+    }
+    .hero-sub {
+      color: rgba(255,255,255,0.92);
+      font-size: 0.94rem;
+      max-width: 740px;
+      margin-bottom: 16px;
+    }
+
+    /* Quick Route Chips */
+    .corridor-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .corridor-chip {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .corridor-chip:hover { background: rgba(255,255,255,0.26); transform: translateY(-1px); }
+    .corridor-chip.active {
+      background: #ffffff;
+      color: var(--red-dark);
+      border-color: #ffffff;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Floating RedBus Search Bar */
+    .search-shell {
+      max-width: 1220px;
+      margin: -42px auto 22px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+    .search-card {
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--line);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1.55fr 1fr 0.95fr 1fr 0.85fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .field label {
+      font-size: 0.71rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .field select, .field input {
+      width: 100%;
+      height: 44px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 0 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: #f8fafc;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .field select:focus, .field input:focus {
+      outline: none;
+      border-color: var(--red);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(216, 78, 85, 0.12);
+    }
+    .btn-search {
+      height: 44px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #d84e55 0%, #b9383f 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 18px rgba(216, 78, 85, 0.28);
+      transition: transform 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+    }
+    .btn-search:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(216, 78, 85, 0.36); }
+    .btn-search:disabled { opacity: 0.65; cursor: wait; transform: none; }
+
+    /* Main Container */
+    .container {
+      max-width: 1220px;
+      margin: 0 auto 56px;
+      padding: 0 20px;
+    }
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    /* Fleet KPI Ribbon */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .kpi-meta small {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .kpi-meta strong {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .kpi-meta span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .kpi-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    /* Filter & Sort Toolbar */
+    .toolbar {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .toolbar-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .badge-count {
+      background: var(--red-soft);
+      color: var(--red-dark);
+      font-weight: 700;
+      font-size: 0.76rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .sort-btn {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sort-btn:hover { border-color: var(--red); color: var(--ink); }
+    .sort-btn.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #ffffff;
+    }
+
+    /* Trip Cards */
+    .trip-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .trip-wrapper { background: transparent; }
+    .trip-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--green);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 1.55fr 1.1fr 0.95fr 1fr auto;
+      gap: 18px;
+      align-items: center;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+    .trip-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .trip-card.sev-high { border-left-color: var(--rose); }
+    .trip-card.sev-elevated { border-left-color: var(--amber); }
+    .trip-card.sev-normal { border-left-color: var(--green); }
+    .trip-card.sev-low { border-left-color: var(--blue); }
+
+    .operator-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .operator-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.02rem;
+      color: var(--ink);
+    }
+    .rating-pill {
+      background: #15803d;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .bus-sub {
+      font-size: 0.81rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .amenities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .amenity {
+      font-size: 0.71rem;
+      font-weight: 600;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Timeline Column */
+    .timing-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .time-col strong {
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .time-col span {
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .duration-track {
+      flex: 1;
+      text-align: center;
+      min-width: 72px;
+    }
+    .duration-track small {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .track-line {
+      height: 2px;
+      background: #cbd5e1;
+      position: relative;
+      border-radius: 99px;
+    }
+    .track-line::before, .track-line::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      position: absolute;
+      top: -2px;
+    }
+    .track-line::before { left: 0; }
+    .track-line::after { right: 0; }
+
+    /* Demand Column */
+    .demand-metric {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .demand-number {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .demand-number span {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .ci-text {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+    .delta-pill {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .delta-up { background: #fff1f2; color: #be123c; }
+    .delta-down { background: #ecfdf5; color: #047857; }
+
+    /* Load Bar + Status */
+    .load-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .status-pill {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+    .pill-high { background: var(--rose-soft); color: #be123c; }
+    .pill-elevated { background: var(--amber-soft); color: #b45309; }
+    .pill-normal { background: var(--green-soft); color: #15803d; }
+    .pill-low { background: var(--blue-soft); color: #1d4ed8; }
+
+    .bar-bg {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+    .action-sub {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* Fare & CTA */
+    .cta-col {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .fare {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .fare small {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .btn-seats {
+      border: none;
+      border-radius: 10px;
+      background: var(--red);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 10px 15px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .btn-seats:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    /* Expandable Seat Drawer inside Card Wrapper */
+    .seat-drawer {
+      margin-top: -8px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 20px;
+      display: none;
+      animation: slideDown 0.2s ease-out;
+    }
+    .seat-drawer.open { display: block; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    /* Bus Deck Visual */
+    .bus-cabin {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .cabin-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px dashed #cbd5e1;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .steering {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--ink);
+    }
+    .seat-legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1.5px solid;
+    }
+    .seat-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .seat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr) 24px repeat(2, 1fr);
+      gap: 7px;
+      align-items: center;
+    }
+    .seat {
+      position: relative;
+      height: 34px;
+      border-radius: 8px 8px 5px 5px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      transition: transform 0.12s;
+    }
+    .seat::after {
+      content: "";
+      position: absolute;
+      bottom: 2px;
+      width: 70%;
+      height: 3px;
+      border-radius: 99px;
+      opacity: 0.35;
+      background: currentColor;
+    }
+    .seat:hover { transform: scale(1.06); }
+    .seat.occ {
+      background: #fee2e2;
+      border-color: #f87171;
+      color: #991b1b;
+    }
+    .seat.uncert {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+    .seat.avail {
+      background: #ffffff;
+      border-color: #22c55e;
+      color: #15803d;
+    }
+
+    /* Explainability & Coach Upgrade Panel */
+    .intel-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .intel-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 15px;
+      box-shadow: var(--shadow-sm);
+    }
+    .intel-card h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .driver-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .driver-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.82rem;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+    .driver-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .driver-val {
+      font-weight: 700;
+      font-size: 0.74rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .driver-pos { background: #fee2e2; color: #b91c1c; }
+    .driver-neg { background: #dcfce7; color: #15803d; }
+
+    .coach-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .coach-btn {
+      border: 1.5px solid var(--line);
+      background: #f8fafc;
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 7px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .coach-btn:hover { border-color: var(--red); color: var(--red); }
+    .coach-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: #ffffff;
+    }
+
+    /* Analytics & Comparison Tab */
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    th {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    tr.champ-row { background: #fff1f2; font-weight: 700; }
+    .chart-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .compare-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .empty-state {
+      background: var(--card);
+      border: 1px dashed #cbd5e1;
+      border-radius: var(--radius);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1040px) {
+      .search-card { grid-template-columns: repeat(2, 1fr); }
+      .trip-card { grid-template-columns: 1fr 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .drawer-grid, .panel-grid, .compare-box { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 820px) {
+      .navbar { position: static; }
+    }
+    @media (max-width: 640px) {
+      .search-card, .trip-card, .kpi-grid { grid-template-columns: 1fr; }
+      .cta-col { align-items: flex-start; text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="#/ui" onclick="return false;">
+        <div class="brand-logo">🚌</div>
+        <div class="brand-text">
+          <h1>bus<span>Pulse</span></h1>
+          <p>RedBus-Style AI Demand &amp; Fleet Intelligence</p>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <button class="nav-tab active" data-tab="search" onclick="switchTab('search', this)">Search Buses</button>
+        <button class="nav-tab" data-tab="analytics" onclick="switchTab('analytics', this)">Model Accuracy &amp; Routes</button>
+        <button class="nav-tab" data-tab="simulator" onclick="switchTab('simulator', this)">What-If Simulator</button>
+      </nav>
+
+      <div class="model-pill" id="modelHealthPill">
+        <span class="dot-live"></span>
+        <span>Connecting to LightGBM...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Crimson RedBus Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">⚡ Real-Time LightGBM Forecasting • 8.89% Held-Out Test WAPE</div>
+      <h2>Find buses, inspect AI-predicted occupancy, and optimize coach capacity</h2>
+      <p class="hero-sub">
+        Pick a corridor and travel date to view every scheduled departure like RedBus — complete with live seat occupancy simulation, 95% confidence intervals, and explainable demand drivers.
+      </p>
+      <div class="corridor-chips" id="corridorChips"></div>
+    </div>
+  </section>
+
+  <!-- Floating Search Card -->
+  <section class="search-shell">
+    <div class="search-card">
+      <div class="field">
+        <label for="routeSelect">From → To Corridor</label>
+        <select id="routeSelect"></select>
+      </div>
+      <div class="field">
+        <label for="travelDate">Travel Date</label>
+        <input type="date" id="travelDate" />
+      </div>
+      <div class="field">
+        <label for="weatherSelect">Weather Forecast</label>
+        <select id="weatherSelect">
+          <option value="Clear">☀️ Clear</option>
+          <option value="Cloudy">⛅ Cloudy</option>
+          <option value="Rain">🌧️ Rain</option>
+          <option value="Heavy_Rain">⛈️ Heavy Rain</option>
+          <option value="Fog">🌫️ Fog</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="eventSelect">Special Event</label>
+        <select id="eventSelect">
+          <option value="None">None</option>
+          <option value="Concert">Concert</option>
+          <option value="Sports_Game">Sports Game</option>
+          <option value="Festival">Festival</option>
+          <option value="Conference">Conference</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="capacityOverride">Coach Seats</label>
+        <select id="capacityOverride">
+          <option value="default">Route Default</option>
+          <option value="32">32 (Mini)</option>
+          <option value="40">40 (City)</option>
+          <option value="45">45 (Std AC)</option>
+          <option value="50">50 (Volvo)</option>
+          <option value="55">55 (Scenic)</option>
+          <option value="60">60 (High-Cap)</option>
+        </select>
+      </div>
+      <button class="btn-search" id="searchBtn" onclick="runScheduleSearch()">
+        🔍 Search Buses
+      </button>
+    </div>
+  </section>
+
+  <main class="container">
+    <!-- TAB 1: SEARCH BUSES -->
+    <section id="tab-search" class="view-section active">
+      <div class="kpi-grid" id="fleetKpis">
+        <div class="kpi-card">
+          <div class="kpi-meta">
+            <small>Total Scheduled Trips</small>
+            <strong id="kpiTrips">—</strong>
+            <span id="kpiRouteTag">Select a corridor</span>
+          </div>
+          <div class="kpi-icon" style="background:#fff1f2;color:#d84e55;">🚌</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-meta">
+            <small>Total Expected Riders</small>
+            <strong id="kpiDemand">—</strong>
+            <span id="kpiBaselineDelta">vs historical baseline</span>
+          </div>
+          <div class="kpi-icon" style="background:#dbeafe;color:#2563eb;">👥</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-meta">
+            <small>Average Fleet Load</small>
+            <strong id="kpiLoad">—</strong>
+            <span>Across selected departures</span>
+          </div>
+          <div class="kpi-icon" style="background:#fef3c7;color:#d97706;">📊</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-meta">
+            <small>High-Demand Alerts</small>
+            <strong id="kpiAlerts">—</strong>
+            <span>Trips ≥ 85% load</span>
+          </div>
+          <div class="kpi-icon" style="background:#dcfce7;color:#16a34a;">⚡</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <span class="toolbar-title" id="resultsHeading">Scheduled Departures</span>
+          <span class="badge-count" id="resultsCountBadge">0 buses</span>
+        </div>
+        <div class="sort-group">
+          <span style="font-size:0.76rem;color:var(--muted);font-weight:600;">Sort by:</span>
+          <button class="sort-btn active" onclick="setSort('time', this)">Departure</button>
+          <button class="sort-btn" onclick="setSort('demand', this)">Highest Demand</button>
+          <button class="sort-btn" onclick="setSort('load', this)">Load %</button>
+          <button class="sort-btn" onclick="setSort('fare', this)">Fare</button>
+        </div>
+      </div>
+
+      <div class="trip-list" id="tripList">
+        <div class="empty-state">Loading scheduled trips and live LightGBM forecasts...</div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MODEL ACCURACY & ROUTES -->
+    <section id="tab-analytics" class="view-section">
+      <div class="kpi-grid" id="metricsSummaryRibbon" style="margin-bottom:18px;"></div>
+      <div class="panel-grid" style="margin-bottom:18px;">
+        <div class="card">
+          <h3>🏆 Held-Out Test Model Comparison</h3>
+          <div style="overflow-x:auto;">
+            <table id="modelCompTable">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>WAPE (%)</th>
+                  <th>MAE</th>
+                  <th>RMSE</th>
+                  <th>R²</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🛣️ Per-Route Held-Out Accuracy</h3>
+          <div style="overflow-x:auto;">
+            <table id="routeBreakdownTable">
+              <thead>
+                <tr>
+                  <th>Route</th>
+                  <th>Mean Demand</th>
+                  <th>WAPE (%)</th>
+                  <th>MAE</th>
+                  <th>RMSE</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="card">
+          <h3>📊 Model Benchmark Comparison</h3>
+          <img class="chart-img" data-fig="/figures/model_comparison_bar.png" src="/figures/model_comparison_bar.png" alt="Model Comparison Chart" />
+        </div>
+        <div class="card">
+          <h3>🔍 Global Feature Importance</h3>
+          <img class="chart-img" data-fig="/figures/feature_importance.png" src="/figures/feature_importance.png" alt="Feature Importance Chart" />
+        </div>
+        <div class="card">
+          <h3>🎯 Actual vs Predicted Demand</h3>
+          <img class="chart-img" data-fig="/figures/actual_vs_predicted_scatter.png" src="/figures/actual_vs_predicted_scatter.png" alt="Actual vs Predicted Scatter" />
+        </div>
+        <div class="card">
+          <h3>📉 Error Residuals Distribution</h3>
+          <img class="chart-img" data-fig="/figures/residuals_distribution.png" src="/figures/residuals_distribution.png" alt="Residuals Distribution" />
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: WHAT-IF SIMULATOR -->
+    <section id="tab-simulator" class="view-section">
+      <div class="card" style="margin-bottom:18px;">
+        <h3>🎛️ Condition Comparison Simulator (Scenario A vs Scenario B)</h3>
+        <p style="font-size:0.86rem;color:var(--muted);margin-bottom:16px;">
+          Compare how weather shocks, major events, or coach size changes alter predicted boarding demand on the same corridor and departure slot.
+        </p>
+        <div class="compare-box">
+          <div class="card" style="background:#f8fafc;">
+            <h4 style="margin-bottom:10px;">Scenario A (Baseline Trip)</h4>
+            <div class="field" style="margin-bottom:10px;">
+              <label>Route</label>
+              <select id="simRoute"></select>
+            </div>
+            <div class="field" style="margin-bottom:10px;">
+              <label>Departure Hour</label>
+              <select id="simHour">
+                <option value="07:30">07:30 AM (Morning Peak)</option>
+                <option value="11:30">11:30 AM (Midday)</option>
+                <option value="17:30" selected>05:30 PM (Evening Peak)</option>
+                <option value="22:00">10:00 PM (Night)</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:10px;">
+              <label>Weather A</label>
+              <select id="simWeatherA">
+                <option value="Clear">Clear</option>
+                <option value="Cloudy">Cloudy</option>
+                <option value="Rain">Rain</option>
+                <option value="Heavy_Rain">Heavy Rain</option>
+                <option value="Fog">Fog</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Event A</label>
+              <select id="simEventA">
+                <option value="None">None</option>
+                <option value="Concert">Concert</option>
+                <option value="Sports_Game">Sports Game</option>
+                <option value="Festival">Festival</option>
+                <option value="Conference">Conference</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card" style="background:#fff1f2;border-color:#fecdd3;">
+            <h4 style="margin-bottom:10px;color:#b9383f;">Scenario B (Shock / Event)</h4>
+            <div class="field" style="margin-bottom:10px;">
+              <label>Date</label>
+              <input type="date" id="simDate" />
+            </div>
+            <div class="field" style="margin-bottom:10px;">
+              <label>Coach Capacity</label>
+              <select id="simCap">
+                <option value="40">40 seats</option>
+                <option value="45">45 seats</option>
+                <option value="50" selected>50 seats</option>
+                <option value="60">60 seats</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:10px;">
+              <label>Weather B</label>
+              <select id="simWeatherB">
+                <option value="Clear">Clear</option>
+                <option value="Cloudy">Cloudy</option>
+                <option value="Rain">Rain</option>
+                <option value="Heavy_Rain" selected>Heavy Rain</option>
+                <option value="Fog">Fog</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Event B</label>
+              <select id="simEventB">
+                <option value="None">None</option>
+                <option value="Concert">Concert</option>
+                <option value="Sports_Game">Sports Game</option>
+                <option value="Festival" selected>Festival</option>
+                <option value="Conference">Conference</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+          <button class="btn-search" onclick="runComparisonSimulator()">⚡ Compare Both Scenarios</button>
+        </div>
+      </div>
+
+      <div id="simResults" class="compare-box"></div>
+    </section>
+  </main>
+
+  <script>
+    const isRemoteStaticHost =
+      window.location.hostname.endsWith('.vercel.app') ||
+      (!window.location.hostname.includes('onrender.com') &&
+       window.location.hostname !== 'localhost' &&
+       window.location.hostname !== '127.0.0.1');
+    const API_BASE = isRemoteStaticHost
+      ? 'https://bus-passenger-demand-forecasting.onrender.com'
+      : '';
+
+    let ROUTES = {};
+    let CURRENT_RESULTS = [];
+    let CURRENT_SORT = 'time';
+
+    function localTodayISO() {
+      const now = new Date();
+      const offsetMs = now.getTimezoneOffset() * 60000;
+      return new Date(now.getTime() - offsetMs).toISOString().split('T')[0];
+    }
+
+    function addMinutesToTime(hhmm, mins) {
+      const [h, m] = hhmm.split(':').map(Number);
+      const total = h * 60 + m + mins;
+      const nh = Math.floor((total % 1440) / 60);
+      const nm = total % 60;
+      return `${String(nh).padStart(2, '0')}:${String(nm).padStart(2, '0')}`;
+    }
+
+    function formatDuration(mins) {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return h > 0 ? `${h}h ${m}m` : `${m}m`;
+    }
+
+    function weatherImpactScore(weather) {
+      return { Clear: 0.0, Cloudy: 0.12, Rain: 0.35, Heavy_Rain: 0.78, Fog: 0.45 }[weather] ?? 0.0;
+    }
+
+    function estimateAdvanceBookings(route, depTime, capacity, eventName) {
+      const hour = Number(depTime.split(':')[0]);
+      const isPeak = (hour >= 7 && hour <= 9) || (hour >= 16 && hour <= 19);
+      let ratio = isPeak ? 0.68 : 0.46;
+      if (route.type === 'Intercity' || route.type === 'Airport') ratio += 0.06;
+      if (hour < 6 || hour >= 21) ratio -= 0.12;
+      if (eventName && eventName !== 'None') ratio += 0.10;
+      return Math.max(4, Math.min(capacity, Math.round(capacity * ratio)));
+    }
+
+    function ratingForRoute(routeId) {
+      return { ROUTE_101: '4.6', ROUTE_102: '4.4', ROUTE_103: '4.8', ROUTE_104: '4.5', ROUTE_105: '4.3', ROUTE_106: '4.7' }[routeId] || '4.5';
+    }
+
+    function amenitiesForRoute(route) {
+      const base = ['📍 Live GPS', '❄️ AC'];
+      if ((route.distance_km || 0) >= 60) base.push('🔌 USB Charge', '🧳 Luggage Bay');
+      else base.push('🎫 E-Ticket', '⚡ Express Lane');
+      return base;
+    }
+
+    function buildTripPayload(routeId, route, travelDate, depTime, weather, specialEvent, capacity) {
+      const dt = new Date(`${travelDate}T${depTime}:00`);
+      const jsDay = dt.getDay(); // 0=Sun..6=Sat
+      const dayOfWeek = (jsDay + 6) % 7; // 0=Mon..6=Sun
+      const [h, m] = depTime.split(':').map(Number);
+
+      return {
+        route_id: routeId,
+        departure_datetime: `${travelDate} ${depTime}:00`,
+        departure_time: depTime,
+        departure_hour: h,
+        departure_minute: m,
+        day_of_week: dayOfWeek,
+        month: dt.getMonth() + 1,
+        bus_capacity: capacity,
+        advance_bookings_d1: estimateAdvanceBookings(route, depTime, capacity, specialEvent),
+        weather_condition: weather,
+        weather_impact_score: weatherImpactScore(weather),
+        special_event: specialEvent,
+        days_to_holiday: specialEvent === 'Festival' ? 1 : 15
+      };
+    }
+
+    async function init() {
+      const today = localTodayISO();
+      document.getElementById('travelDate').value = today;
+      document.getElementById('simDate').value = today;
+      document.querySelectorAll('img[data-fig]').forEach(img => {
+        img.src = `${API_BASE}${img.dataset.fig}`;
+      });
+
+      try {
+        const [healthRes, routesRes] = await Promise.all([
+          fetch(`${API_BASE}/health`),
+          fetch(`${API_BASE}/routes`)
+        ]);
+        const health = await healthRes.json();
+        const routesData = await routesRes.json();
+        ROUTES = routesData.routes || {};
+
+        document.getElementById('modelHealthPill').innerHTML =
+          `<span class="dot-live"></span><span>${health.loaded_model} Active • Test RMSE ${Number(health.test_rmse).toFixed(2)}</span>`;
+
+        populateRouteControls();
+        await Promise.all([runScheduleSearch(), loadAnalytics()]);
+      } catch (err) {
+        document.getElementById('modelHealthPill').innerHTML =
+          `<span style="color:#dc2626;">● API Offline</span>`;
+        document.getElementById('tripList').innerHTML =
+          `<div class="empty-state">Unable to reach FastAPI backend. Ensure uvicorn is running on port 8000.</div>`;
+      }
+    }
+
+    function populateRouteControls() {
+      const routeSelect = document.getElementById('routeSelect');
+      const simRoute = document.getElementById('simRoute');
+      const chipWrap = document.getElementById('corridorChips');
+
+      routeSelect.innerHTML = '';
+      simRoute.innerHTML = '';
+      chipWrap.innerHTML = '';
+
+      Object.entries(ROUTES).forEach(([rid, r], idx) => {
+        const label = `${r.origin} → ${r.destination} (${rid})`;
+        routeSelect.add(new Option(label, rid));
+        simRoute.add(new Option(label, rid));
+
+        const chip = document.createElement('button');
+        chip.className = 'corridor-chip' + (idx === 0 ? ' active' : '');
+        chip.dataset.route = rid;
+        chip.textContent = `${r.origin} → ${r.destination}`;
+        chip.onclick = () => {
+          routeSelect.value = rid;
+          document.querySelectorAll('.corridor-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          runScheduleSearch();
+        };
+        chipWrap.appendChild(chip);
+      });
+
+      routeSelect.addEventListener('change', () => {
+        const rid = routeSelect.value;
+        document.querySelectorAll('.corridor-chip').forEach(c => {
+          c.classList.toggle('active', c.dataset.route === rid);
+        });
+        runScheduleSearch();
+      });
+    }
+
+    async function runScheduleSearch() {
+      const routeId = document.getElementById('routeSelect').value;
+      const route = ROUTES[routeId];
+      if (!route) return;
+
+      const travelDate = document.getElementById('travelDate').value || localTodayISO();
+      const weather = document.getElementById('weatherSelect').value;
+      const specialEvent = document.getElementById('eventSelect').value;
+      const capOverride = document.getElementById('capacityOverride').value;
+      const capacity = capOverride === 'default' ? route.default_capacity : Number(capOverride);
+      const schedules = route.schedules || ['07:30', '10:30', '14:00', '17:30', '20:30'];
+
+      const btn = document.getElementById('searchBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Forecasting...';
+
+      try {
+        const trips = schedules.map(depTime =>
+          buildTripPayload(routeId, route, travelDate, depTime, weather, specialEvent, capacity)
+        );
+
+        const res = await fetch(`${API_BASE}/predict/batch`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ trips })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Batch forecast error');
+
+        CURRENT_RESULTS = (data.forecasts || []).map((item, idx) => ({
+          idx,
+          depTime: schedules[idx],
+          arrTime: addMinutesToTime(schedules[idx], route.duration_min || 60),
+          route,
+          routeId,
+          travelDate,
+          weather,
+          specialEvent,
+          capacity,
+          payload: item
+        }));
+
+        renderResults();
+      } catch (err) {
+        document.getElementById('tripList').innerHTML =
+          `<div class="empty-state">Error running batch forecast: ${err.message}</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔍 Search Buses';
+      }
+    }
+
+    function setSort(mode, el) {
+      CURRENT_SORT = mode;
+      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderResults();
+    }
+
+    function severityStyle(sev, loadPct) {
+      if (sev === 'DANGER' || loadPct > 100) {
+        return { card: 'sev-high', pill: 'pill-high', color: '#e11d48', label: 'Overflow Risk' };
+      }
+      if (sev === 'WARNING' || loadPct >= 85) {
+        return { card: 'sev-elevated', pill: 'pill-elevated', color: '#d97706', label: 'Near Capacity' };
+      }
+      if (sev === 'INFO' || loadPct < 35) {
+        return { card: 'sev-low', pill: 'pill-low', color: '#2563eb', label: 'Low Load / Merge' };
+      }
+      return { card: 'sev-normal', pill: 'pill-normal', color: '#16a34a', label: 'Optimal Fill' };
+    }
+
+    function renderResults() {
+      const items = [...CURRENT_RESULTS];
+      if (CURRENT_SORT === 'demand') {
+        items.sort((a, b) => Number(b.payload.forecast.predicted_passenger_count) - Number(a.payload.forecast.predicted_passenger_count));
+      } else if (CURRENT_SORT === 'load') {
+        items.sort((a, b) => Number(b.payload.capacity_decision_support.occupancy_rate) - Number(a.payload.capacity_decision_support.occupancy_rate));
+      } else if (CURRENT_SORT === 'fare') {
+        items.sort((a, b) => a.route.base_fare - b.route.base_fare);
+      } else {
+        items.sort((a, b) => a.depTime.localeCompare(b.depTime));
+      }
+
+      const route = items[0]?.route;
+      const totalDemand = items.reduce((s, x) => s + Number(x.payload.forecast.predicted_passenger_count || 0), 0);
+      const totalBase = items.reduce((s, x) => s + Number(x.payload.forecast.baseline_passenger_count || 0), 0);
+      const avgLoad = items.length
+        ? items.reduce((s, x) => s + Number(x.payload.capacity_decision_support.occupancy_rate || 0), 0) / items.length
+        : 0;
+      const highAlerts = items.filter(x =>
+        Number(x.payload.capacity_decision_support.occupancy_rate || 0) >= 0.85 ||
+        x.payload.capacity_decision_support.severity === 'DANGER' ||
+        x.payload.capacity_decision_support.severity === 'WARNING'
+      ).length;
+
+      document.getElementById('kpiTrips').textContent = items.length;
+      document.getElementById('kpiRouteTag').textContent = route ? `${route.origin} → ${route.destination}` : '—';
+      document.getElementById('kpiDemand').textContent = Math.round(totalDemand);
+      const diffPct = totalBase > 0 ? (((totalDemand - totalBase) / totalBase) * 100).toFixed(1) : '0.0';
+      document.getElementById('kpiBaselineDelta').textContent = `${Number(diffPct) >= 0 ? '+' : ''}${diffPct}% vs historical avg`;
+      document.getElementById('kpiLoad').textContent = `${(avgLoad * 100).toFixed(1)}%`;
+      document.getElementById('kpiAlerts').textContent = highAlerts;
+
+      document.getElementById('resultsHeading').textContent =
+        route ? `${route.origin} → ${route.destination} Departures` : 'Scheduled Departures';
+      document.getElementById('resultsCountBadge').textContent = `${items.length} departures found`;
+
+      const listEl = document.getElementById('tripList');
+      if (!items.length) {
+        listEl.innerHTML = `<div class="empty-state">No departures returned for this filter.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = items.map(item => buildTripCardHTML(item)).join('');
+    }
+
+    function buildTripCardHTML(item) {
+      const f = item.payload.forecast;
+      const cds = item.payload.capacity_decision_support;
+      const exp = item.payload.explainability;
+      const r = item.route;
+
+      const pred = Number(f.predicted_passenger_count || 0);
+      const base = Number(f.baseline_passenger_count || 0);
+      const ci = f.prediction_interval_95pct || { lower: pred, upper: pred };
+      const cap = Number(cds.bus_capacity || item.capacity);
+      const loadRate = Number(cds.occupancy_rate || 0);
+      const loadPct = Math.round(loadRate * 100);
+      const barWidth = Math.min(100, loadPct);
+      const sev = severityStyle(cds.severity, loadPct);
+      const delta = pred - base;
+      const deltaClass = delta >= 0 ? 'delta-up' : 'delta-down';
+      const deltaLabel = `${delta >= 0 ? '▲ +' : '▼ '}${delta.toFixed(1)} vs baseline`;
+      const availSeats = Number(cds.available_empty_seats ?? Math.max(0, cap - Math.round(pred)));
+      const busesNeeded = Math.max(1, Math.ceil(pred / cap));
+      const fareInr = Math.round((r.base_fare || 10) * 40);
+      const amens = amenitiesForRoute(r).map(a => `<span class="amenity">${a}</span>`).join('');
+      const cardId = `drawer-${item.idx}`;
+
+      return `
+        <div class="trip-wrapper" id="wrap-${item.idx}">
+          <div class="trip-card ${sev.card}">
+            <div>
+              <div class="operator-top">
+                <span class="operator-name">busPulse Express • ${item.routeId}</span>
+                <span class="rating-pill">★ ${ratingForRoute(item.routeId)}</span>
+              </div>
+              <div class="bus-sub">${r.bus_type} • ${r.distance_km} km • ${r.type}</div>
+              <div class="amenities">${amens}</div>
+            </div>
+
+            <div class="timing-box">
+              <div class="time-col">
+                <strong>${item.depTime}</strong>
+                <span>${r.origin}</span>
+              </div>
+              <div class="duration-track">
+                <small>${formatDuration(r.duration_min || 60)}</small>
+                <div class="track-line"></div>
+              </div>
+              <div class="time-col" style="text-align:right;">
+                <strong>${item.arrTime}</strong>
+                <span>${r.destination}</span>
+              </div>
+            </div>
+
+            <div class="demand-metric">
+              <div class="demand-number">
+                ${pred.toFixed(1)} <span>/ ${cap} pax</span>
+              </div>
+              <div class="ci-text">95% CI: ${Number(ci.lower).toFixed(1)} – ${Number(ci.upper).toFixed(1)} riders</div>
+              <span class="delta-pill ${deltaClass}">${deltaLabel}</span>
+            </div>
+
+            <div class="load-box">
+              <span class="status-pill ${sev.pill}">${sev.label} • ${loadPct}%</span>
+              <div class="bar-bg">
+                <div class="bar-fill" style="width:${barWidth}%;background:${sev.color};"></div>
+              </div>
+              <div class="action-sub">${availSeats} open seats • ${busesNeeded} coach(es)</div>
+            </div>
+
+            <div class="cta-col">
+              <div class="fare">₹${fareInr}<small>approx fare (\$${Number(r.base_fare).toFixed(2)})</small></div>
+              <button class="btn-seats" onclick="toggleDrawer(${item.idx})">VIEW SEATS &amp; AI</button>
+            </div>
+          </div>
+
+          <div class="seat-drawer" id="${cardId}">
+            ${buildDrawerHTML(item, f, cds, exp, cap)}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildDrawerHTML(item, f, cds, exp, cap) {
+      const pred = Number(f.predicted_passenger_count || 0);
+      const ci = f.prediction_interval_95pct || { lower: pred, upper: pred };
+      const occupiedCount = Math.min(cap, Math.round(pred));
+      const upperCount = Math.min(cap, Math.round(Number(ci.upper || pred)));
+      const rows = Math.ceil(cap / 4);
+      let seatIdx = 0;
+      let rowsHTML = '';
+
+      for (let r = 1; r <= rows; r++) {
+        const cells = [];
+        for (let c = 0; c < 4; c++) {
+          if (c === 2) cells.push(`<div style="text-align:center;color:#94a3b8;font-size:0.65rem;">┆</div>`);
+          if (seatIdx < cap) {
+            const seatLabel = `${r}${['A','B','C','D'][c]}`;
+            let cls = 'avail', statusText = 'Predicted Empty';
+            if (seatIdx < occupiedCount) {
+              cls = 'occ'; statusText = 'Expected Occupied';
+            } else if (seatIdx < upperCount) {
+              cls = 'uncert'; statusText = '95% Upper-Bound Buffer';
+            }
+            cells.push(`<div class="seat ${cls}" title="Seat ${seatLabel}: ${statusText}">${seatLabel}</div>`);
+            seatIdx++;
+          } else {
+            cells.push(`<div></div>`);
+          }
+        }
+        rowsHTML += `<div class="seat-row">${cells.join('')}</div>`;
+      }
+
+      const drivers = (exp.key_drivers || []).map(d => {
+        const isPos = String(d.direction).toLowerCase() === 'positive';
+        return `
+          <div class="driver-item">
+            <div class="driver-head">
+              <strong style="font-size:0.81rem;">${d.factor}</strong>
+              <span class="driver-val ${isPos ? 'driver-pos' : 'driver-neg'}">${d.impact}</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--muted);">${d.detail}</span>
+          </div>
+        `;
+      }).join('') || `<div class="driver-item"><span>Standard timetable demand pattern</span></div>`;
+
+      const coachSizes = [32, 40, 45, 50, 55, 60];
+      const coachBtns = coachSizes.map(sz => `
+        <button class="coach-btn ${sz === cap ? 'active' : ''}" onclick="simulateCoachSize(${item.idx}, ${sz})">
+          ${sz} Seats
+        </button>
+      `).join('');
+
+      const excess = Number(cds.excess_passengers || 0);
+      return `
+        <div class="drawer-grid">
+          <div class="bus-cabin">
+            <div class="cabin-head">
+              <span>🪑 Simulated 2+2 Coach Deck (${cap} Seats)</span>
+              <span class="steering">🧭 Driver</span>
+            </div>
+            <div class="seat-legend">
+              <span class="legend-item"><span class="legend-swatch" style="background:#fee2e2;border-color:#f87171;"></span>Expected (${occupiedCount})</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:#fef3c7;border-color:#f59e0b;"></span>Surge Buffer (${Math.max(0, upperCount - occupiedCount)})</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:#fff;border-color:#22c55e;"></span>Available (${Math.max(0, cap - upperCount)})</span>
+            </div>
+            <div class="seat-rows">${rowsHTML}</div>
+          </div>
+
+          <div class="intel-panel">
+            <div class="intel-card">
+              <h4><span>🚦 Dispatch Decision Support</span><span style="color:var(--red);font-size:0.76rem;">${cds.status_code}</span></h4>
+              <p style="font-size:0.86rem;color:var(--ink);margin-bottom:8px;"><strong>${cds.action_recommendation}</strong></p>
+              <p style="font-size:0.78rem;color:var(--muted);">
+                ${excess > 0 ? `Overflow risk: +${excess.toFixed(1)} riders above ${cap}-seat coach.` : `Available spare seats: ${cds.available_empty_seats} out of ${cap}.`}
+              </p>
+              <div style="margin-top:12px;">
+                <small style="font-size:0.73rem;font-weight:700;color:var(--muted);text-transform:uppercase;">Test Different Coach Size:</small>
+                <div class="coach-btns">${coachBtns}</div>
+              </div>
+            </div>
+
+            <div class="intel-card">
+              <h4><span>🧠 Local Demand Drivers</span><span style="font-size:0.74rem;color:var(--muted);">LightGBM factors</span></h4>
+              <div class="driver-list">${drivers}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleDrawer(idx) {
+      const el = document.getElementById(`drawer-${idx}`);
+      if (el) el.classList.toggle('open');
+    }
+
+    async function simulateCoachSize(idx, newCap) {
+      const item = CURRENT_RESULTS.find(x => x.idx === idx);
+      if (!item) return;
+
+      const payload = buildTripPayload(
+        item.routeId, item.route, item.travelDate, item.depTime, item.weather, item.specialEvent, newCap
+      );
+      const res = await fetch(`${API_BASE}/predict`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const updated = await res.json();
+      item.capacity = newCap;
+      item.payload = updated;
+      renderResults();
+      const drawer = document.getElementById(`drawer-${idx}`);
+      if (drawer) drawer.classList.add('open');
+    }
+
+    async function loadAnalytics() {
+      try {
+        const res = await fetch(`${API_BASE}/metrics`);
+        const m = await res.json();
+        const champ = m.champion_model || 'LightGBM';
+        const comp = m.model_comparison || {};
+        const champTest = comp[champ]?.test || {};
+        const baseTest = comp['Historical_Baseline']?.test || {};
+
+        document.getElementById('metricsSummaryRibbon').innerHTML = `
+          <div class="kpi-card">
+            <div class="kpi-meta"><small>Champion Model</small><strong>${champ}</strong><span>Chronological held-out test</span></div>
+            <div class="kpi-icon" style="background:#fff1f2;color:#d84e55;">🏆</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-meta"><small>Test WAPE</small><strong>${Number(champTest.WAPE_percent || 0).toFixed(2)}%</strong><span>Baseline: ${Number(baseTest.WAPE_percent || 0).toFixed(2)}%</span></div>
+            <div class="kpi-icon" style="background:#dcfce7;color:#16a34a;">🎯</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-meta"><small>Test MAE / RMSE</small><strong>${Number(champTest.MAE || 0).toFixed(2)} / ${Number(champTest.RMSE || 0).toFixed(2)}</strong><span>Passengers per trip</span></div>
+            <div class="kpi-icon" style="background:#dbeafe;color:#2563eb;">📐</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-meta"><small>Test R² Score</small><strong>${Number(champTest.R2 || 0).toFixed(4)}</strong><span>Variance explained</span></div>
+            <div class="kpi-icon" style="background:#fef3c7;color:#d97706;">📈</div>
+          </div>
+        `;
+
+        const compBody = document.querySelector('#modelCompTable tbody');
+        compBody.innerHTML = Object.entries(comp).map(([name, vals]) => {
+          const t = vals.test || {};
+          return `
+            <tr class="${name === champ ? 'champ-row' : ''}">
+              <td>${name === champ ? '🏆 ' : ''}${name}</td>
+              <td>${Number(t.WAPE_percent || 0).toFixed(2)}%</td>
+              <td>${Number(t.MAE || 0).toFixed(3)}</td>
+              <td>${Number(t.RMSE || 0).toFixed(3)}</td>
+              <td>${Number(t.R2 || 0).toFixed(4)}</td>
+            </tr>
+          `;
+        }).join('');
+
+        const routeBody = document.querySelector('#routeBreakdownTable tbody');
+        routeBody.innerHTML = (m.route_breakdown || []).map(r => `
+          <tr>
+            <td><strong>${r.route_id}</strong></td>
+            <td>${Number(r.mean_actual || 0).toFixed(1)}</td>
+            <td>${Number(r['WAPE_%'] || 0).toFixed(2)}%</td>
+            <td>${Number(r.MAE || 0).toFixed(2)}</td>
+            <td>${Number(r.RMSE || 0).toFixed(2)}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.warn('Analytics load warning:', e);
+      }
+    }
+
+    async function runComparisonSimulator() {
+      const routeId = document.getElementById('simRoute').value;
+      const route = ROUTES[routeId];
+      if (!route) return;
+
+      const hhmm = document.getElementById('simHour').value;
+      const dateStr = document.getElementById('simDate').value || localTodayISO();
+      const cap = Number(document.getElementById('simCap').value);
+      const wA = document.getElementById('simWeatherA').value;
+      const eA = document.getElementById('simEventA').value;
+      const wB = document.getElementById('simWeatherB').value;
+      const eB = document.getElementById('simEventB').value;
+
+      const res = await fetch(`${API_BASE}/predict/batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trips: [
+            buildTripPayload(routeId, route, dateStr, hhmm, wA, eA, cap),
+            buildTripPayload(routeId, route, dateStr, hhmm, wB, eB, cap)
+          ]
+        })
+      });
+      const data = await res.json();
+      const [a, b] = data.forecasts || [];
+      if (!a || !b) return;
+
+      const predA = Number(a.forecast.predicted_passenger_count || 0);
+      const predB = Number(b.forecast.predicted_passenger_count || 0);
+      const diff = predB - predA;
+
+      document.getElementById('simResults').innerHTML = [
+        { title: `Scenario A (${wA}, ${eA})`, item: a, accent: '#2563eb' },
+        { title: `Scenario B (${wB}, ${eB})`, item: b, accent: '#d84e55', delta: diff }
+      ].map(s => {
+        const pred = Number(s.item.forecast.predicted_passenger_count || 0);
+        const load = (Number(s.item.capacity_decision_support.occupancy_rate || 0) * 100).toFixed(1);
+        const ci = s.item.forecast.prediction_interval_95pct || { lower: pred, upper: pred };
+        return `
+          <div class="card" style="border-top:4px solid ${s.accent};">
+            <h4>${s.title}</h4>
+            <p style="font-size:1.7rem;font-weight:800;margin:8px 0;">${pred.toFixed(1)} riders <span style="font-size:0.9rem;color:var(--muted);">(${load}% load)</span></p>
+            ${s.delta !== undefined ? `<p style="font-weight:700;color:${s.delta >= 0 ? '#be123c' : '#15803d'};margin-bottom:6px;">Impact vs Scenario A: ${s.delta >= 0 ? '+' : ''}${s.delta.toFixed(1)} riders</p>` : ''}
+            <p style="font-size:0.86rem;color:var(--muted);">95% Interval: ${Number(ci.lower).toFixed(1)} – ${Number(ci.upper).toFixed(1)} passengers</p>
+            <p style="font-size:0.86rem;margin-top:8px;"><strong>Action:</strong> ${s.item.capacity_decision_support.action_recommendation}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

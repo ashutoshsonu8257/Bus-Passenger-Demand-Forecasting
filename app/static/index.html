@@ -1087,19 +1087,19 @@
       <div class="panel-grid">
         <div class="card">
           <h3>📊 Model Benchmark Comparison</h3>
-          <img class="chart-img" src="/figures/model_comparison_bar.png" alt="Model Comparison Chart" />
+          <img class="chart-img" data-fig="/figures/model_comparison_bar.png" src="/figures/model_comparison_bar.png" alt="Model Comparison Chart" />
         </div>
         <div class="card">
           <h3>🔍 Global Feature Importance</h3>
-          <img class="chart-img" src="/figures/feature_importance.png" alt="Feature Importance Chart" />
+          <img class="chart-img" data-fig="/figures/feature_importance.png" src="/figures/feature_importance.png" alt="Feature Importance Chart" />
         </div>
         <div class="card">
           <h3>🎯 Actual vs Predicted Demand</h3>
-          <img class="chart-img" src="/figures/actual_vs_predicted_scatter.png" alt="Actual vs Predicted Scatter" />
+          <img class="chart-img" data-fig="/figures/actual_vs_predicted_scatter.png" src="/figures/actual_vs_predicted_scatter.png" alt="Actual vs Predicted Scatter" />
         </div>
         <div class="card">
           <h3>📉 Error Residuals Distribution</h3>
-          <img class="chart-img" src="/figures/residuals_distribution.png" alt="Residuals Distribution" />
+          <img class="chart-img" data-fig="/figures/residuals_distribution.png" src="/figures/residuals_distribution.png" alt="Residuals Distribution" />
         </div>
       </div>
     </section>
@@ -1197,6 +1197,15 @@
   </main>
 
   <script>
+    const isRemoteStaticHost =
+      window.location.hostname.endsWith('.vercel.app') ||
+      (!window.location.hostname.includes('onrender.com') &&
+       window.location.hostname !== 'localhost' &&
+       window.location.hostname !== '127.0.0.1');
+    const API_BASE = isRemoteStaticHost
+      ? 'https://bus-passenger-demand-forecasting.onrender.com'
+      : '';
+
     let ROUTES = {};
     let CURRENT_RESULTS = [];
     let CURRENT_SORT = 'time';
@@ -1273,11 +1282,14 @@
       const today = localTodayISO();
       document.getElementById('travelDate').value = today;
       document.getElementById('simDate').value = today;
+      document.querySelectorAll('img[data-fig]').forEach(img => {
+        img.src = `${API_BASE}${img.dataset.fig}`;
+      });
 
       try {
         const [healthRes, routesRes] = await Promise.all([
-          fetch('/health'),
-          fetch('/routes')
+          fetch(`${API_BASE}/health`),
+          fetch(`${API_BASE}/routes`)
         ]);
         const health = await healthRes.json();
         const routesData = await routesRes.json();
@@ -1353,7 +1365,7 @@
           buildTripPayload(routeId, route, travelDate, depTime, weather, specialEvent, capacity)
         );
 
-        const res = await fetch('/predict/batch', {
+        const res = await fetch(`${API_BASE}/predict/batch`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ trips })
@@ -1628,7 +1640,7 @@
       const payload = buildTripPayload(
         item.routeId, item.route, item.travelDate, item.depTime, item.weather, item.specialEvent, newCap
       );
-      const res = await fetch('/predict', {
+      const res = await fetch(`${API_BASE}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -1643,7 +1655,7 @@
 
     async function loadAnalytics() {
       try {
-        const res = await fetch('/metrics');
+        const res = await fetch(`${API_BASE}/metrics`);
         const m = await res.json();
         const champ = m.champion_model || 'LightGBM';
         const comp = m.model_comparison || {};
@@ -1711,7 +1723,7 @@
       const wB = document.getElementById('simWeatherB').value;
       const eB = document.getElementById('simEventB').value;
 
-      const res = await fetch('/predict/batch', {
+      const res = await fetch(`${API_BASE}/predict/batch`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
