@@ -53,43 +53,44 @@
     .nav-inner {
       max-width: 1220px;
       margin: 0 auto;
-      padding: 12px 20px;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
       color: var(--ink);
     }
     .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       background: linear-gradient(135deg, #d84e55 0%, #ef4444 100%);
       display: grid;
       place-items: center;
       color: #fff;
-      font-size: 20px;
+      font-size: 18px;
       box-shadow: 0 6px 14px rgba(216, 78, 85, 0.28);
+      flex-shrink: 0;
     }
     .brand-text h1 {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.18rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
     .brand-text h1 span { color: var(--red); }
     .brand-text p {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
       font-weight: 500;
     }
@@ -97,16 +98,16 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
     .nav-tab {
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       color: var(--muted);
       font-weight: 600;
-      font-size: 0.88rem;
-      padding: 8px 14px;
+      font-size: 0.85rem;
+      padding: 7px 13px;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.18s ease;
@@ -114,7 +115,8 @@
     .nav-tab:hover { background: #f1f5f9; color: var(--ink); }
     .nav-tab.active {
       background: var(--red-soft);
-      color: var(--red);
+      border-color: var(--red-border);
+      color: var(--red-dark);
     }
 
     .model-pill {
@@ -125,7 +127,7 @@
       border-radius: 999px;
       background: #f8fafc;
       border: 1px solid var(--line);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
       color: var(--ink);
     }
@@ -146,7 +148,7 @@
     .hero {
       background: linear-gradient(125deg, #b9383f 0%, #d84e55 52%, #e9646b 100%);
       color: #ffffff;
-      padding: 34px 20px 68px;
+      padding: 28px 20px 64px;
       position: relative;
       overflow: hidden;
     }
@@ -173,22 +175,22 @@
       border: 1px solid rgba(255,255,255,0.28);
       border-radius: 999px;
       padding: 5px 12px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .hero h2 {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.55rem, 3vw, 2.25rem);
+      font-size: clamp(1.45rem, 2.8vw, 2.15rem);
       font-weight: 800;
       letter-spacing: -0.025em;
       margin-bottom: 6px;
     }
     .hero-sub {
-      color: rgba(255,255,255,0.9);
-      font-size: 0.96rem;
-      max-width: 720px;
-      margin-bottom: 18px;
+      color: rgba(255,255,255,0.92);
+      font-size: 0.94rem;
+      max-width: 740px;
+      margin-bottom: 16px;
     }
 
     /* Quick Route Chips */
@@ -196,7 +198,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 6px;
     }
     .corridor-chip {
       background: rgba(255,255,255,0.14);
@@ -245,7 +246,7 @@
       gap: 5px;
     }
     .field label {
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -257,7 +258,7 @@
       border: 1.5px solid var(--line);
       border-radius: 12px;
       padding: 0 12px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--ink);
       background: #f8fafc;
@@ -276,8 +277,8 @@
       background: linear-gradient(135deg, #d84e55 0%, #b9383f 100%);
       color: #ffffff;
       font-weight: 700;
-      font-size: 0.92rem;
-      padding: 0 22px;
+      font-size: 0.9rem;
+      padding: 0 20px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -319,7 +320,7 @@
     }
     .kpi-meta small {
       display: block;
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
@@ -327,14 +328,14 @@
     }
     .kpi-meta strong {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.55rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--ink);
       line-height: 1.2;
     }
     .kpi-meta span {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--muted);
       margin-top: 2px;
     }
@@ -410,6 +411,7 @@
       flex-direction: column;
       gap: 14px;
     }
+    .trip-wrapper { background: transparent; }
     .trip-card {
       background: var(--card);
       border: 1px solid var(--line);
@@ -442,7 +444,7 @@
     .operator-name {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
-      font-size: 1.03rem;
+      font-size: 1.02rem;
       color: var(--ink);
     }
     .rating-pill {
@@ -484,12 +486,12 @@
     .time-col strong {
       display: block;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.18rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--ink);
     }
     .time-col span {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--muted);
       font-weight: 500;
     }
@@ -531,17 +533,17 @@
     }
     .demand-number {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.22rem;
       font-weight: 800;
       color: var(--ink);
     }
     .demand-number span {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--muted);
     }
     .ci-text {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--muted);
     }
     .delta-pill {
@@ -606,7 +608,7 @@
     }
     .fare {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.22rem;
       font-weight: 800;
       color: var(--ink);
     }
@@ -623,8 +625,8 @@
       background: var(--red);
       color: #ffffff;
       font-weight: 700;
-      font-size: 0.84rem;
-      padding: 10px 16px;
+      font-size: 0.82rem;
+      padding: 10px 15px;
       cursor: pointer;
       transition: background 0.15s, transform 0.15s;
       white-space: nowrap;
@@ -632,9 +634,6 @@
     .btn-seats:hover { background: var(--red-dark); transform: translateY(-1px); }
 
     /* Expandable Seat Drawer inside Card Wrapper */
-    .trip-wrapper {
-      background: transparent;
-    }
     .seat-drawer {
       margin-top: -8px;
       background: #f8fafc;
@@ -663,7 +662,7 @@
       background: #ffffff;
       border: 2px solid #cbd5e1;
       border-radius: 22px;
-      padding: 18px 18px 20px;
+      padding: 18px;
       box-shadow: var(--shadow-sm);
     }
     .cabin-head {
@@ -773,6 +772,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
     }
     .driver-list {
       display: flex;
@@ -781,18 +781,25 @@
     }
     .driver-item {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 3px;
       font-size: 0.82rem;
-      padding: 7px 10px;
+      padding: 8px 10px;
       border-radius: 8px;
       background: #f8fafc;
     }
+    .driver-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
     .driver-val {
       font-weight: 700;
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       padding: 2px 8px;
       border-radius: 999px;
+      white-space: nowrap;
     }
     .driver-pos { background: #fee2e2; color: #b91c1c; }
     .driver-neg { background: #dcfce7; color: #15803d; }
@@ -885,6 +892,9 @@
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
       .drawer-grid, .panel-grid, .compare-box { grid-template-columns: 1fr; }
     }
+    @media (max-width: 820px) {
+      .navbar { position: static; }
+    }
     @media (max-width: 640px) {
       .search-card, .trip-card, .kpi-grid { grid-template-columns: 1fr; }
       .cta-col { align-items: flex-start; text-align: left; }
@@ -922,7 +932,7 @@
       <div class="hero-badge">⚡ Real-Time LightGBM Forecasting • 8.89% Held-Out Test WAPE</div>
       <h2>Find buses, inspect AI-predicted occupancy, and optimize coach capacity</h2>
       <p class="hero-sub">
-        Pick a corridor and travel date to view every scheduled departure like RedBus — complete with live seat occupancy simulation, 90% confidence intervals, and SHAP demand drivers.
+        Pick a corridor and travel date to view every scheduled departure like RedBus — complete with live seat occupancy simulation, 95% confidence intervals, and explainable demand drivers.
       </p>
       <div class="corridor-chips" id="corridorChips"></div>
     </div>
@@ -945,7 +955,7 @@
           <option value="Clear">☀️ Clear</option>
           <option value="Cloudy">⛅ Cloudy</option>
           <option value="Rain">🌧️ Rain</option>
-          <option value="Heavy Rain">⛈️ Heavy Rain</option>
+          <option value="Heavy_Rain">⛈️ Heavy Rain</option>
           <option value="Fog">🌫️ Fog</option>
         </select>
       </div>
@@ -953,10 +963,10 @@
         <label for="eventSelect">Special Event</label>
         <select id="eventSelect">
           <option value="None">None</option>
-          <option value="Public Holiday">Public Holiday</option>
+          <option value="Concert">Concert</option>
+          <option value="Sports_Game">Sports Game</option>
           <option value="Festival">Festival</option>
-          <option value="Concert/Sports">Concert/Sports</option>
-          <option value="University Exam">University Exam</option>
+          <option value="Conference">Conference</option>
         </select>
       </div>
       <div class="field">
@@ -967,6 +977,7 @@
           <option value="40">40 (City)</option>
           <option value="45">45 (Std AC)</option>
           <option value="50">50 (Volvo)</option>
+          <option value="55">55 (Scenic)</option>
           <option value="60">60 (High-Cap)</option>
         </select>
       </div>
@@ -1098,7 +1109,7 @@
       <div class="card" style="margin-bottom:18px;">
         <h3>🎛️ Condition Comparison Simulator (Scenario A vs Scenario B)</h3>
         <p style="font-size:0.86rem;color:var(--muted);margin-bottom:16px;">
-          Compare how weather shocks, festivals, or coach upgrades alter predicted boarding demand on the exact same route and departure slot.
+          Compare how weather shocks, major events, or coach size changes alter predicted boarding demand on the same corridor and departure slot.
         </p>
         <div class="compare-box">
           <div class="card" style="background:#f8fafc;">
@@ -1111,7 +1122,7 @@
               <label>Departure Hour</label>
               <select id="simHour">
                 <option value="07:30">07:30 AM (Morning Peak)</option>
-                <option value="10:30">10:30 AM (Midday)</option>
+                <option value="11:30">11:30 AM (Midday)</option>
                 <option value="17:30" selected>05:30 PM (Evening Peak)</option>
                 <option value="22:00">10:00 PM (Night)</option>
               </select>
@@ -1122,16 +1133,18 @@
                 <option value="Clear">Clear</option>
                 <option value="Cloudy">Cloudy</option>
                 <option value="Rain">Rain</option>
-                <option value="Heavy Rain">Heavy Rain</option>
+                <option value="Heavy_Rain">Heavy Rain</option>
+                <option value="Fog">Fog</option>
               </select>
             </div>
             <div class="field">
               <label>Event A</label>
               <select id="simEventA">
                 <option value="None">None</option>
-                <option value="Public Holiday">Public Holiday</option>
+                <option value="Concert">Concert</option>
+                <option value="Sports_Game">Sports Game</option>
                 <option value="Festival">Festival</option>
-                <option value="Concert/Sports">Concert/Sports</option>
+                <option value="Conference">Conference</option>
               </select>
             </div>
           </div>
@@ -1146,8 +1159,8 @@
               <label>Coach Capacity</label>
               <select id="simCap">
                 <option value="40">40 seats</option>
-                <option value="45" selected>45 seats</option>
-                <option value="50">50 seats</option>
+                <option value="45">45 seats</option>
+                <option value="50" selected>50 seats</option>
                 <option value="60">60 seats</option>
               </select>
             </div>
@@ -1157,16 +1170,18 @@
                 <option value="Clear">Clear</option>
                 <option value="Cloudy">Cloudy</option>
                 <option value="Rain">Rain</option>
-                <option value="Heavy Rain" selected>Heavy Rain</option>
+                <option value="Heavy_Rain" selected>Heavy Rain</option>
+                <option value="Fog">Fog</option>
               </select>
             </div>
             <div class="field">
               <label>Event B</label>
               <select id="simEventB">
                 <option value="None">None</option>
-                <option value="Public Holiday">Public Holiday</option>
+                <option value="Concert">Concert</option>
+                <option value="Sports_Game">Sports Game</option>
                 <option value="Festival" selected>Festival</option>
-                <option value="Concert/Sports">Concert/Sports</option>
+                <option value="Conference">Conference</option>
               </select>
             </div>
           </div>
@@ -1206,8 +1221,18 @@
       return h > 0 ? `${h}h ${m}m` : `${m}m`;
     }
 
-    function tempForWeather(weather) {
-      return { Clear: 26, Cloudy: 23, Rain: 20, 'Heavy Rain': 18, Fog: 15 }[weather] || 24;
+    function weatherImpactScore(weather) {
+      return { Clear: 0.0, Cloudy: 0.12, Rain: 0.35, Heavy_Rain: 0.78, Fog: 0.45 }[weather] ?? 0.0;
+    }
+
+    function estimateAdvanceBookings(route, depTime, capacity, eventName) {
+      const hour = Number(depTime.split(':')[0]);
+      const isPeak = (hour >= 7 && hour <= 9) || (hour >= 16 && hour <= 19);
+      let ratio = isPeak ? 0.68 : 0.46;
+      if (route.type === 'Intercity' || route.type === 'Airport') ratio += 0.06;
+      if (hour < 6 || hour >= 21) ratio -= 0.12;
+      if (eventName && eventName !== 'None') ratio += 0.10;
+      return Math.max(4, Math.min(capacity, Math.round(capacity * ratio)));
     }
 
     function ratingForRoute(routeId) {
@@ -1219,6 +1244,29 @@
       if ((route.distance_km || 0) >= 60) base.push('🔌 USB Charge', '🧳 Luggage Bay');
       else base.push('🎫 E-Ticket', '⚡ Express Lane');
       return base;
+    }
+
+    function buildTripPayload(routeId, route, travelDate, depTime, weather, specialEvent, capacity) {
+      const dt = new Date(`${travelDate}T${depTime}:00`);
+      const jsDay = dt.getDay(); // 0=Sun..6=Sat
+      const dayOfWeek = (jsDay + 6) % 7; // 0=Mon..6=Sun
+      const [h, m] = depTime.split(':').map(Number);
+
+      return {
+        route_id: routeId,
+        departure_datetime: `${travelDate} ${depTime}:00`,
+        departure_time: depTime,
+        departure_hour: h,
+        departure_minute: m,
+        day_of_week: dayOfWeek,
+        month: dt.getMonth() + 1,
+        bus_capacity: capacity,
+        advance_bookings_d1: estimateAdvanceBookings(route, depTime, capacity, specialEvent),
+        weather_condition: weather,
+        weather_impact_score: weatherImpactScore(weather),
+        special_event: specialEvent,
+        days_to_holiday: specialEvent === 'Festival' ? 1 : 15
+      };
     }
 
     async function init() {
@@ -1301,14 +1349,9 @@
       btn.textContent = '⏳ Forecasting...';
 
       try {
-        const trips = schedules.map(depTime => ({
-          route_id: routeId,
-          departure_datetime: `${travelDate}T${depTime}:00`,
-          weather,
-          special_event: specialEvent,
-          bus_capacity: capacity,
-          temperature_c: tempForWeather(weather)
-        }));
+        const trips = schedules.map(depTime =>
+          buildTripPayload(routeId, route, travelDate, depTime, weather, specialEvent, capacity)
+        );
 
         const res = await fetch('/predict/batch', {
           method: 'POST',
@@ -1316,6 +1359,7 @@
           body: JSON.stringify({ trips })
         });
         const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Batch forecast error');
 
         CURRENT_RESULTS = (data.forecasts || []).map((item, idx) => ({
           idx,
@@ -1348,14 +1392,14 @@
     }
 
     function severityStyle(sev, loadPct) {
-      if (sev === 'high' || loadPct >= 85) {
-        return { card: 'sev-high', pill: 'pill-high', color: '#e11d48', label: 'Surge / High Demand' };
+      if (sev === 'DANGER' || loadPct > 100) {
+        return { card: 'sev-high', pill: 'pill-high', color: '#e11d48', label: 'Overflow Risk' };
       }
-      if (sev === 'elevated' || loadPct >= 65) {
-        return { card: 'sev-elevated', pill: 'pill-elevated', color: '#d97706', label: 'Busy Departure' };
+      if (sev === 'WARNING' || loadPct >= 85) {
+        return { card: 'sev-elevated', pill: 'pill-elevated', color: '#d97706', label: 'Near Capacity' };
       }
-      if (loadPct < 35) {
-        return { card: 'sev-low', pill: 'pill-low', color: '#2563eb', label: 'Light Load' };
+      if (sev === 'INFO' || loadPct < 35) {
+        return { card: 'sev-low', pill: 'pill-low', color: '#2563eb', label: 'Low Load / Merge' };
       }
       return { card: 'sev-normal', pill: 'pill-normal', color: '#16a34a', label: 'Optimal Fill' };
     }
@@ -1363,9 +1407,9 @@
     function renderResults() {
       const items = [...CURRENT_RESULTS];
       if (CURRENT_SORT === 'demand') {
-        items.sort((a, b) => b.payload.forecast.predicted_demand - a.payload.forecast.predicted_demand);
+        items.sort((a, b) => Number(b.payload.forecast.predicted_passenger_count) - Number(a.payload.forecast.predicted_passenger_count));
       } else if (CURRENT_SORT === 'load') {
-        items.sort((a, b) => b.payload.forecast.predicted_load_factor - a.payload.forecast.predicted_load_factor);
+        items.sort((a, b) => Number(b.payload.capacity_decision_support.occupancy_rate) - Number(a.payload.capacity_decision_support.occupancy_rate));
       } else if (CURRENT_SORT === 'fare') {
         items.sort((a, b) => a.route.base_fare - b.route.base_fare);
       } else {
@@ -1373,12 +1417,16 @@
       }
 
       const route = items[0]?.route;
-      const totalDemand = items.reduce((s, x) => s + x.payload.forecast.predicted_demand, 0);
-      const totalBase = items.reduce((s, x) => s + x.payload.forecast.historical_baseline_estimate, 0);
+      const totalDemand = items.reduce((s, x) => s + Number(x.payload.forecast.predicted_passenger_count || 0), 0);
+      const totalBase = items.reduce((s, x) => s + Number(x.payload.forecast.baseline_passenger_count || 0), 0);
       const avgLoad = items.length
-        ? items.reduce((s, x) => s + x.payload.forecast.predicted_load_factor, 0) / items.length
+        ? items.reduce((s, x) => s + Number(x.payload.capacity_decision_support.occupancy_rate || 0), 0) / items.length
         : 0;
-      const highAlerts = items.filter(x => x.payload.forecast.predicted_load_factor >= 0.85 || x.payload.capacity_decision_support.alert_flag).length;
+      const highAlerts = items.filter(x =>
+        Number(x.payload.capacity_decision_support.occupancy_rate || 0) >= 0.85 ||
+        x.payload.capacity_decision_support.severity === 'DANGER' ||
+        x.payload.capacity_decision_support.severity === 'WARNING'
+      ).length;
 
       document.getElementById('kpiTrips').textContent = items.length;
       document.getElementById('kpiRouteTag').textContent = route ? `${route.origin} → ${route.destination}` : '—';
@@ -1406,15 +1454,21 @@
       const cds = item.payload.capacity_decision_support;
       const exp = item.payload.explainability;
       const r = item.route;
-      const cap = cds.scheduled_bus_capacity || item.capacity;
-      const loadPct = Math.min(130, Math.round(f.predicted_load_factor * 100));
+
+      const pred = Number(f.predicted_passenger_count || 0);
+      const base = Number(f.baseline_passenger_count || 0);
+      const ci = f.prediction_interval_95pct || { lower: pred, upper: pred };
+      const cap = Number(cds.bus_capacity || item.capacity);
+      const loadRate = Number(cds.occupancy_rate || 0);
+      const loadPct = Math.round(loadRate * 100);
       const barWidth = Math.min(100, loadPct);
       const sev = severityStyle(cds.severity, loadPct);
-      const delta = Number(f.demand_delta_vs_baseline || 0);
+      const delta = pred - base;
       const deltaClass = delta >= 0 ? 'delta-up' : 'delta-down';
-      const deltaLabel = `${delta >= 0 ? '▲ +' : '▼ '}${delta.toFixed(1)} vs avg`;
-      const availSeats = Math.max(0, cap - Math.round(f.predicted_demand));
-      const fareInr = Math.round((r.base_fare || 2.5) * 40);
+      const deltaLabel = `${delta >= 0 ? '▲ +' : '▼ '}${delta.toFixed(1)} vs baseline`;
+      const availSeats = Number(cds.available_empty_seats ?? Math.max(0, cap - Math.round(pred)));
+      const busesNeeded = Math.max(1, Math.ceil(pred / cap));
+      const fareInr = Math.round((r.base_fare || 10) * 40);
       const amens = amenitiesForRoute(r).map(a => `<span class="amenity">${a}</span>`).join('');
       const cardId = `drawer-${item.idx}`;
 
@@ -1447,9 +1501,9 @@
 
             <div class="demand-metric">
               <div class="demand-number">
-                ${f.predicted_demand.toFixed(1)} <span>/ ${cap} pax</span>
+                ${pred.toFixed(1)} <span>/ ${cap} pax</span>
               </div>
-              <div class="ci-text">90% CI: ${f.lower_bound_90.toFixed(0)} – ${f.upper_bound_90.toFixed(0)} riders</div>
+              <div class="ci-text">95% CI: ${Number(ci.lower).toFixed(1)} – ${Number(ci.upper).toFixed(1)} riders</div>
               <span class="delta-pill ${deltaClass}">${deltaLabel}</span>
             </div>
 
@@ -1458,7 +1512,7 @@
               <div class="bar-bg">
                 <div class="bar-fill" style="width:${barWidth}%;background:${sev.color};"></div>
               </div>
-              <div class="action-sub">${availSeats} open seats • ${cds.recommended_buses_needed} coach(es)</div>
+              <div class="action-sub">${availSeats} open seats • ${busesNeeded} coach(es)</div>
             </div>
 
             <div class="cta-col">
@@ -1475,8 +1529,10 @@
     }
 
     function buildDrawerHTML(item, f, cds, exp, cap) {
-      const occupiedCount = Math.min(cap, Math.round(f.predicted_demand));
-      const upperCount = Math.min(cap, Math.round(f.upper_bound_90));
+      const pred = Number(f.predicted_passenger_count || 0);
+      const ci = f.prediction_interval_95pct || { lower: pred, upper: pred };
+      const occupiedCount = Math.min(cap, Math.round(pred));
+      const upperCount = Math.min(cap, Math.round(Number(ci.upper || pred)));
       const rows = Math.ceil(cap / 4);
       let seatIdx = 0;
       let rowsHTML = '';
@@ -1491,7 +1547,7 @@
             if (seatIdx < occupiedCount) {
               cls = 'occ'; statusText = 'Expected Occupied';
             } else if (seatIdx < upperCount) {
-              cls = 'uncert'; statusText = '90% Upper-Bound Buffer';
+              cls = 'uncert'; statusText = '95% Upper-Bound Buffer';
             }
             cells.push(`<div class="seat ${cls}" title="Seat ${seatLabel}: ${statusText}">${seatLabel}</div>`);
             seatIdx++;
@@ -1502,25 +1558,27 @@
         rowsHTML += `<div class="seat-row">${cells.join('')}</div>`;
       }
 
-      const drivers = (exp.top_feature_drivers || []).slice(0, 6).map(d => {
-        const val = Number(d.shap_impact ?? d.contribution ?? 0);
-        const pos = val >= 0;
-        const name = (d.feature || d.label || 'driver').replaceAll('_', ' ');
+      const drivers = (exp.key_drivers || []).map(d => {
+        const isPos = String(d.direction).toLowerCase() === 'positive';
         return `
           <div class="driver-item">
-            <span style="text-transform:capitalize;font-weight:600;">${name}</span>
-            <span class="driver-val ${pos ? 'driver-pos' : 'driver-neg'}">${pos ? '+' : ''}${val.toFixed(2)} pax</span>
+            <div class="driver-head">
+              <strong style="font-size:0.81rem;">${d.factor}</strong>
+              <span class="driver-val ${isPos ? 'driver-pos' : 'driver-neg'}">${d.impact}</span>
+            </div>
+            <span style="font-size:0.75rem;color:var(--muted);">${d.detail}</span>
           </div>
         `;
-      }).join('') || `<div class="driver-item"><span>No driver breakdown available</span></div>`;
+      }).join('') || `<div class="driver-item"><span>Standard timetable demand pattern</span></div>`;
 
-      const coachSizes = [32, 40, 45, 50, 60];
+      const coachSizes = [32, 40, 45, 50, 55, 60];
       const coachBtns = coachSizes.map(sz => `
         <button class="coach-btn ${sz === cap ? 'active' : ''}" onclick="simulateCoachSize(${item.idx}, ${sz})">
           ${sz} Seats
         </button>
       `).join('');
 
+      const excess = Number(cds.excess_passengers || 0);
       return `
         <div class="drawer-grid">
           <div class="bus-cabin">
@@ -1538,9 +1596,11 @@
 
           <div class="intel-panel">
             <div class="intel-card">
-              <h4><span>🚦 Dispatch Recommendation</span><span style="color:var(--red);">${cds.demand_category}</span></h4>
-              <p style="font-size:0.86rem;color:var(--ink);margin-bottom:8px;"><strong>${cds.recommended_action}</strong></p>
-              <p style="font-size:0.78rem;color:var(--muted);">Capacity gap: ${cds.capacity_gap >= 0 ? '+' : ''}${Number(cds.capacity_gap).toFixed(1)} riders vs ${cap}-seat coach.</p>
+              <h4><span>🚦 Dispatch Decision Support</span><span style="color:var(--red);font-size:0.76rem;">${cds.status_code}</span></h4>
+              <p style="font-size:0.86rem;color:var(--ink);margin-bottom:8px;"><strong>${cds.action_recommendation}</strong></p>
+              <p style="font-size:0.78rem;color:var(--muted);">
+                ${excess > 0 ? `Overflow risk: +${excess.toFixed(1)} riders above ${cap}-seat coach.` : `Available spare seats: ${cds.available_empty_seats} out of ${cap}.`}
+              </p>
               <div style="margin-top:12px;">
                 <small style="font-size:0.73rem;font-weight:700;color:var(--muted);text-transform:uppercase;">Test Different Coach Size:</small>
                 <div class="coach-btns">${coachBtns}</div>
@@ -1548,7 +1608,7 @@
             </div>
 
             <div class="intel-card">
-              <h4><span>🧠 Top LightGBM Demand Drivers</span><span style="font-size:0.74rem;color:var(--muted);">SHAP impact</span></h4>
+              <h4><span>🧠 Local Demand Drivers</span><span style="font-size:0.74rem;color:var(--muted);">LightGBM factors</span></h4>
               <div class="driver-list">${drivers}</div>
             </div>
           </div>
@@ -1565,17 +1625,13 @@
       const item = CURRENT_RESULTS.find(x => x.idx === idx);
       if (!item) return;
 
+      const payload = buildTripPayload(
+        item.routeId, item.route, item.travelDate, item.depTime, item.weather, item.specialEvent, newCap
+      );
       const res = await fetch('/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          route_id: item.routeId,
-          departure_datetime: `${item.travelDate}T${item.depTime}:00`,
-          weather: item.weather,
-          special_event: item.specialEvent,
-          bus_capacity: newCap,
-          temperature_c: tempForWeather(item.weather)
-        })
+        body: JSON.stringify(payload)
       });
       const updated = await res.json();
       item.capacity = newCap;
@@ -1600,15 +1656,15 @@
             <div class="kpi-icon" style="background:#fff1f2;color:#d84e55;">🏆</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-meta"><small>Test WAPE</small><strong>${Number(champTest.wape_pct || 0).toFixed(2)}%</strong><span>Baseline: ${Number(baseTest.wape_pct || 0).toFixed(2)}%</span></div>
+            <div class="kpi-meta"><small>Test WAPE</small><strong>${Number(champTest.WAPE_percent || 0).toFixed(2)}%</strong><span>Baseline: ${Number(baseTest.WAPE_percent || 0).toFixed(2)}%</span></div>
             <div class="kpi-icon" style="background:#dcfce7;color:#16a34a;">🎯</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-meta"><small>Test MAE / RMSE</small><strong>${Number(champTest.mae || 0).toFixed(2)} / ${Number(champTest.rmse || 0).toFixed(2)}</strong><span>Passengers per trip</span></div>
+            <div class="kpi-meta"><small>Test MAE / RMSE</small><strong>${Number(champTest.MAE || 0).toFixed(2)} / ${Number(champTest.RMSE || 0).toFixed(2)}</strong><span>Passengers per trip</span></div>
             <div class="kpi-icon" style="background:#dbeafe;color:#2563eb;">📐</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-meta"><small>Test R² Score</small><strong>${Number(champTest.r2 || 0).toFixed(4)}</strong><span>Variance explained</span></div>
+            <div class="kpi-meta"><small>Test R² Score</small><strong>${Number(champTest.R2 || 0).toFixed(4)}</strong><span>Variance explained</span></div>
             <div class="kpi-icon" style="background:#fef3c7;color:#d97706;">📈</div>
           </div>
         `;
@@ -1619,10 +1675,10 @@
           return `
             <tr class="${name === champ ? 'champ-row' : ''}">
               <td>${name === champ ? '🏆 ' : ''}${name}</td>
-              <td>${Number(t.wape_pct || 0).toFixed(2)}%</td>
-              <td>${Number(t.mae || 0).toFixed(3)}</td>
-              <td>${Number(t.rmse || 0).toFixed(3)}</td>
-              <td>${Number(t.r2 || 0).toFixed(4)}</td>
+              <td>${Number(t.WAPE_percent || 0).toFixed(2)}%</td>
+              <td>${Number(t.MAE || 0).toFixed(3)}</td>
+              <td>${Number(t.RMSE || 0).toFixed(3)}</td>
+              <td>${Number(t.R2 || 0).toFixed(4)}</td>
             </tr>
           `;
         }).join('');
@@ -1631,10 +1687,10 @@
         routeBody.innerHTML = (m.route_breakdown || []).map(r => `
           <tr>
             <td><strong>${r.route_id}</strong></td>
-            <td>${Number(r.mean_actual_demand || 0).toFixed(1)}</td>
-            <td>${Number(r.wape_pct || 0).toFixed(2)}%</td>
-            <td>${Number(r.mae || 0).toFixed(2)}</td>
-            <td>${Number(r.rmse || 0).toFixed(2)}</td>
+            <td>${Number(r.mean_actual || 0).toFixed(1)}</td>
+            <td>${Number(r['WAPE_%'] || 0).toFixed(2)}%</td>
+            <td>${Number(r.MAE || 0).toFixed(2)}</td>
+            <td>${Number(r.RMSE || 0).toFixed(2)}</td>
           </tr>
         `).join('');
       } catch (e) {
@@ -1644,6 +1700,9 @@
 
     async function runComparisonSimulator() {
       const routeId = document.getElementById('simRoute').value;
+      const route = ROUTES[routeId];
+      if (!route) return;
+
       const hhmm = document.getElementById('simHour').value;
       const dateStr = document.getElementById('simDate').value || localTodayISO();
       const cap = Number(document.getElementById('simCap').value);
@@ -1657,8 +1716,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           trips: [
-            { route_id: routeId, departure_datetime: `${dateStr}T${hhmm}:00`, weather: wA, special_event: eA, bus_capacity: cap, temperature_c: tempForWeather(wA) },
-            { route_id: routeId, departure_datetime: `${dateStr}T${hhmm}:00`, weather: wB, special_event: eB, bus_capacity: cap, temperature_c: tempForWeather(wB) }
+            buildTripPayload(routeId, route, dateStr, hhmm, wA, eA, cap),
+            buildTripPayload(routeId, route, dateStr, hhmm, wB, eB, cap)
           ]
         })
       });
@@ -1666,19 +1725,24 @@
       const [a, b] = data.forecasts || [];
       if (!a || !b) return;
 
-      const diff = b.forecast.predicted_demand - a.forecast.predicted_demand;
+      const predA = Number(a.forecast.predicted_passenger_count || 0);
+      const predB = Number(b.forecast.predicted_passenger_count || 0);
+      const diff = predB - predA;
+
       document.getElementById('simResults').innerHTML = [
         { title: `Scenario A (${wA}, ${eA})`, item: a, accent: '#2563eb' },
         { title: `Scenario B (${wB}, ${eB})`, item: b, accent: '#d84e55', delta: diff }
       ].map(s => {
-        const load = (s.item.forecast.predicted_load_factor * 100).toFixed(1);
+        const pred = Number(s.item.forecast.predicted_passenger_count || 0);
+        const load = (Number(s.item.capacity_decision_support.occupancy_rate || 0) * 100).toFixed(1);
+        const ci = s.item.forecast.prediction_interval_95pct || { lower: pred, upper: pred };
         return `
           <div class="card" style="border-top:4px solid ${s.accent};">
             <h4>${s.title}</h4>
-            <p style="font-size:1.8rem;font-weight:800;margin:8px 0;">${s.item.forecast.predicted_demand.toFixed(1)} riders <span style="font-size:0.9rem;color:var(--muted);">(${load}% load)</span></p>
+            <p style="font-size:1.7rem;font-weight:800;margin:8px 0;">${pred.toFixed(1)} riders <span style="font-size:0.9rem;color:var(--muted);">(${load}% load)</span></p>
             ${s.delta !== undefined ? `<p style="font-weight:700;color:${s.delta >= 0 ? '#be123c' : '#15803d'};margin-bottom:6px;">Impact vs Scenario A: ${s.delta >= 0 ? '+' : ''}${s.delta.toFixed(1)} riders</p>` : ''}
-            <p style="font-size:0.86rem;color:var(--muted);">90% Interval: ${s.item.forecast.lower_bound_90.toFixed(1)} – ${s.item.forecast.upper_bound_90.toFixed(1)} passengers</p>
-            <p style="font-size:0.86rem;margin-top:8px;"><strong>Action:</strong> ${s.item.capacity_decision_support.recommended_action}</p>
+            <p style="font-size:0.86rem;color:var(--muted);">95% Interval: ${Number(ci.lower).toFixed(1)} – ${Number(ci.upper).toFixed(1)} passengers</p>
+            <p style="font-size:0.86rem;margin-top:8px;"><strong>Action:</strong> ${s.item.capacity_decision_support.action_recommendation}</p>
           </div>
         `;
       }).join('');

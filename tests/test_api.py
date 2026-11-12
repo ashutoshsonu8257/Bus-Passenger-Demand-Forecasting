@@ -86,3 +86,14 @@ def test_redbus_ui_endpoint():
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
     assert "busPulse" in response.text
+    for expected_key in (
+        "predicted_passenger_count",
+        "baseline_passenger_count",
+        "prediction_interval_95pct",
+        "occupancy_rate",
+        "action_recommendation",
+        "key_drivers",
+        "WAPE_percent",
+        "WAPE_%",
+    ):
+        assert expected_key in response.text
