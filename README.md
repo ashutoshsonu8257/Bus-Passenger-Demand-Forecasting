@@ -164,11 +164,12 @@ Opens in your browser at `http://localhost:8501`. Features include:
 - "What-If" Sensitivity Simulator for adverse weather storms and event rushes.
 - Full model benchmark comparisons and stratified error breakdowns.
 
-### Interface B: Production FastAPI REST Service
+### Interface B: Production FastAPI REST Service & RedBus-Style Web UI
 ```bash
 uvicorn app.api:app --host 0.0.0.0 --port 8000 --reload
 ```
-Interactive Swagger UI available at: `http://localhost:8000/docs`
+- **RedBus-Style Web UI (`busPulse`)**: `http://localhost:8000/ui`
+- **Interactive Swagger UI**: `http://localhost:8000/docs`
 
 #### Sample Prediction Request:
 ```bash

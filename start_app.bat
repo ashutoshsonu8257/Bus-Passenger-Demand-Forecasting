@@ -11,7 +11,8 @@ start "Bus Demand Streamlit (Port 8501)" cmd /k ".\.venv\Scripts\python.exe -m s
 
 echo.
 echo Both services are launching!
-echo  - Interactive Dashboard : http://localhost:8501
-echo  - REST API Swagger Docs : http://localhost:8000/docs
+echo  - RedBus-Style Web UI    : http://localhost:8000/ui
+echo  - Streamlit Dashboard    : http://localhost:8501
+echo  - REST API Swagger Docs  : http://localhost:8000/docs
 echo.
 pause

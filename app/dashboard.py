@@ -511,7 +511,7 @@ with tab3:
 
 with tab4:
     st.subheader("Responsible AI, Data Privacy & System Limitations")
-    st.markdown("""
+    st.markdown(r"""
     ### 1. Decision-Support Boundary & Human Oversight
     - **Advisory Role Only:** This forecasting model is strictly an **operational decision-support tool**. It does **not** execute automated dispatch cancellations or vehicle reassignments without human dispatcher confirmation.
     - **Dispatcher Verification:** Fleet operations managers must check driver shift limits, fleet maintenance status, and depot parking constraints before approving schedule adjustments.
