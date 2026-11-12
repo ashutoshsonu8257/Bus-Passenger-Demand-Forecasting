@@ -28,14 +28,72 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling
+# Custom Styling (RedBus Crimson Theme + Seat Map)
 st.markdown("""
 <style>
+    .redbus-hero {
+        background: linear-gradient(135deg, #D84E55 0%, #B8333B 100%);
+        padding: 20px 26px;
+        border-radius: 12px;
+        color: #ffffff;
+        margin-bottom: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .redbus-hero h1 {
+        color: #ffffff !important;
+        margin: 0 !important;
+        font-size: 26px !important;
+    }
+    .redbus-hero p {
+        margin: 4px 0 0 0;
+        opacity: 0.92;
+        font-size: 14px;
+    }
+    .redbus-link-btn {
+        background: #ffffff;
+        color: #D84E55 !important;
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 13px;
+    }
+    .trip-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: 1.5fr 1.2fr 1.4fr 1fr;
+        gap: 12px;
+        align-items: center;
+        color: #1f2937;
+    }
+    .seat-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 26px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 700;
+        margin: 2px;
+        border: 1.5px solid #d1d5db;
+    }
+    .seat-booked { background: #4b5563; color: #fff; border-color: #374151; }
+    .seat-predicted { background: #fde68a; color: #92400e; border-color: #f59e0b; }
+    .seat-empty { background: #ffffff; color: #065f46; border-color: #10b981; }
     .metric-box {
         background-color: #f8f9fa;
         border-radius: 8px;
         padding: 16px;
-        border-left: 5px solid #2980b9;
+        border-left: 5px solid #D84E55;
         margin-bottom: 10px;
     }
     .status-banner {
@@ -146,17 +204,125 @@ forecast_data = inference_result["forecast"]
 cap_support = inference_result["capacity_decision_support"]
 explain_data = inference_result["explainability"]
 
-# Header
-st.title("🚌 Bus Passenger-Demand Decision Support Interface")
-st.markdown("Decision-support system for intercity and commuter bus operators to optimize fleet dispatching and avoid overflow.")
+def render_seat_map_html(capacity: int, booked: int, predicted_total: float) -> str:
+    """Render a RedBus-style 2+2 cabin seat map HTML block."""
+    booked_seats = min(capacity, max(0, int(booked)))
+    pred_int = min(capacity, max(0, int(round(predicted_total))))
+    walkup_seats = max(0, pred_int - booked_seats)
+    empty_seats = max(0, capacity - booked_seats - walkup_seats)
+
+    rows = []
+    seat_num = 1
+    num_rows = (capacity + 3) // 4
+    for _ in range(num_rows):
+        row_html = "<div style='display:flex;justify-content:center;gap:4px;margin-bottom:4px;'>"
+        for col_i in range(4):
+            if col_i == 2:
+                row_html += "<div style='width:20px;text-align:center;color:#9ca3af;font-size:10px;'>|</div>"
+            if seat_num <= capacity:
+                if seat_num <= booked_seats:
+                    cls = "seat-booked"
+                elif seat_num <= booked_seats + walkup_seats:
+                    cls = "seat-predicted"
+                else:
+                    cls = "seat-empty"
+                row_html += f"<div class='seat-box {cls}'>{seat_num}</div>"
+                seat_num += 1
+            else:
+                row_html += "<div style='width:34px;'></div>"
+        row_html += "</div>"
+        rows.append(row_html)
+
+    return (
+        "<div style='background:#fff;border:2px solid #d1d5db;border-radius:12px;padding:14px;max-width:340px;'>"
+        "<div style='display:flex;justify-content:space-between;border-bottom:1px dashed #e5e7eb;"
+        "padding-bottom:8px;margin-bottom:10px;font-size:11px;font-weight:700;color:#6b7280;'>"
+        f"<span>FRONT • {capacity} SEATS</span><span>☸ DRIVER</span></div>"
+        + "".join(rows)
+        + "<div style='display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:#4b5563;'>"
+        f"<span>⬛ Booked ({booked_seats})</span>"
+        f"<span>🟨 Predicted Walk-up ({walkup_seats})</span>"
+        f"<span>🟩 Empty ({empty_seats})</span>"
+        "</div></div>"
+    )
+
+# RedBus-Inspired Crimson Header
+st.markdown("""
+<div class="redbus-hero">
+    <div>
+        <h1>🚌 busPulse AI — RedBus-Style Fleet & Demand Forecaster</h1>
+        <p>Live LightGBM Passenger Demand Forecasting • D-1 Capacity Planning & Seat Utilization</p>
+    </div>
+    <a class="redbus-link-btn" href="http://localhost:8000/ui" target="_blank">Open Full RedBus Web App ↗</a>
+</div>
+""", unsafe_allow_html=True)
 
 # Main Tabs
-tab1, tab2, tab3, tab4 = st.tabs([
-    "🎯 Live Demand Forecast & Dispatch Action",
+tab_sched, tab1, tab2, tab3, tab4 = st.tabs([
+    "🚌 Daily Bus Schedule (RedBus View)",
+    "🎯 Single Trip & Seat Map",
     "📊 Model Benchmark & Granular Evaluation",
     "🔍 Feature Attribution & Explainability",
     "🛡️ Responsible AI & System Limitations"
 ])
+
+with tab_sched:
+    st.subheader(f"{r_info.get('origin', 'Origin')} → {r_info.get('destination', 'Destination')} | {departure_date.strftime('%A, %b %d, %Y')}")
+    st.caption(f"Route: {selected_route} ({r_info['type']}) • {r_info['distance_km']} km • ~{r_info['duration_min']} mins • Fare: ${r_info['base_fare']:.0f}")
+
+    pace_pct = st.slider("Overall D-1 Route Booking Pace (% of Bus Capacity)", 20, 110, 72, step=5, key="sched_pace")
+    schedules = r_info.get("schedules", ["08:00", "12:00", "17:00"])
+    batch_inputs = []
+    for slot in schedules:
+        hh, mm = map(int, slot.split(":"))
+        is_pk = 1 if (7 <= hh <= 9 or 17 <= hh <= 19) else 0
+        slot_factor = 1.08 if is_pk else 0.90
+        adv = max(1, int(round(bus_capacity * (pace_pct / 100.0) * slot_factor)))
+        batch_inputs.append({
+            "route_id": selected_route,
+            "departure_datetime": f"{departure_date} {slot}:00",
+            "departure_hour": hh,
+            "departure_minute": mm,
+            "departure_time": slot,
+            "day_of_week": departure_date.weekday(),
+            "month": departure_date.month,
+            "bus_capacity": bus_capacity,
+            "advance_bookings_d1": adv,
+            "weather_condition": weather,
+            "weather_impact_score": weather_score,
+            "special_event": special_event,
+            "days_to_holiday": int(days_to_holiday)
+        })
+
+    batch_results = forecaster.predict_batch(batch_inputs)
+    for res in batch_results:
+        m = res["trip_metadata"]
+        f = res["forecast"]
+        c = res["capacity_decision_support"]
+        dep_dt = datetime.strptime(m["departure_time"], "%H:%M")
+        arr_dt = dep_dt + pd.Timedelta(minutes=r_info["duration_min"])
+        badge_bg = {"DANGER": "#fee2e2;color:#991b1b", "WARNING": "#fef3c7;color:#92400e", "INFO": "#dbeafe;color:#1e40af"}.get(c["severity"], "#d1fae5;color:#065f46")
+
+        st.markdown(f"""
+        <div class="trip-card">
+            <div>
+                <div style="font-weight:800;font-size:15px;">busPulse {r_info['type']} Express</div>
+                <div style="font-size:12px;color:#6b7280;">{m['bus_type']} • {bus_capacity} seats • Fare ${r_info['base_fare']:.0f}</div>
+            </div>
+            <div>
+                <span style="font-size:18px;font-weight:800;">{m['departure_time']}</span>
+                <span style="color:#9ca3af;font-size:12px;"> ── {r_info['duration_min']}m ──▶ </span>
+                <span style="font-size:18px;font-weight:800;">{arr_dt.strftime('%H:%M')}</span>
+            </div>
+            <div>
+                <div style="font-weight:800;font-size:16px;color:#D84E55;">{f['predicted_passenger_count']} pax predicted</div>
+                <div style="font-size:12px;color:#6b7280;">95% CI [{f['prediction_interval_95pct']['lower']}–{f['prediction_interval_95pct']['upper']}] • {m['advance_bookings_d1']} D-1 booked</div>
+            </div>
+            <div style="text-align:right;">
+                <span style="background:{badge_bg};padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;">{c['occupancy_percentage']} FULL • {c['severity']}</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 with tab1:
     st.subheader(f"Trip Departure: {r_info['name']} at {departure_time.strftime('%H:%M')} on {departure_date.strftime('%A, %b %d, %Y')}")
@@ -214,14 +380,19 @@ with tab1:
     </div>
     """, unsafe_allow_html=True)
 
-    # Visual Capacity Gauge Bar
-    st.markdown("#### Real-time Seating Capacity Utilization")
+    # Visual Capacity Gauge Bar + RedBus Seat Map
+    st.markdown("#### Real-time Seating Capacity & Cabin Layout")
     occ_val = min(1.3, cap_support["occupancy_rate"])
-    progress_col1, progress_col2 = st.columns([4, 1])
-    with progress_col1:
+    gauge_col, seat_col = st.columns([1.3, 1])
+    with gauge_col:
         st.progress(min(1.0, float(occ_val)))
-    with progress_col2:
-        st.write(f"**{cap_support['occupancy_percentage']} full**")
+        st.write(f"**{cap_support['occupancy_percentage']} full** ({forecast_data['predicted_passenger_count']} predicted pax / {bus_capacity} seats)")
+        st.caption("Dark grey seats are confirmed D-1 bookings; amber seats are AI-predicted last-24h/walk-up riders; green-bordered seats remain open.")
+    with seat_col:
+        st.markdown(
+            render_seat_map_html(bus_capacity, advance_bookings, forecast_data["predicted_passenger_count"]),
+            unsafe_allow_html=True
+        )
 
     # Interactive Scenario Sensitivity
     st.markdown("---")

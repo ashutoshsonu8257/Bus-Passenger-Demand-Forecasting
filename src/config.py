@@ -40,57 +40,81 @@ TEST_RATIO = 0.15
 ROUTE_CONFIG = {
     "ROUTE_101": {
         "name": "Metro Downtown - Tech Park Commuter",
+        "origin": "Metro Downtown",
+        "destination": "Tech Park",
         "type": "Commuter",
+        "bus_type": "Standard_City",
         "distance_km": 42.0,
         "default_capacity": 50,
         "base_fare": 12.0,
         "duration_min": 55,
-        "is_commuter_heavy": True
+        "is_commuter_heavy": True,
+        "schedules": ["06:30", "07:15", "08:00", "08:45", "12:00", "16:30", "17:15", "18:00", "19:00"]
     },
     "ROUTE_102": {
         "name": "City Center - University Campus",
+        "origin": "City Center",
+        "destination": "University Campus",
         "type": "University",
+        "bus_type": "Standard_Campus",
         "distance_km": 28.0,
         "default_capacity": 45,
         "base_fare": 8.0,
         "duration_min": 40,
-        "is_commuter_heavy": True
+        "is_commuter_heavy": True,
+        "schedules": ["07:30", "09:00", "11:30", "14:00", "16:30", "18:15", "20:00"]
     },
     "ROUTE_103": {
         "name": "Capital City - Harbor Port Intercity",
+        "origin": "Capital City",
+        "destination": "Harbor Port",
         "type": "Intercity",
+        "bus_type": "Deluxe_Intercity",
         "distance_km": 210.0,
         "default_capacity": 50,
         "base_fare": 45.0,
         "duration_min": 180,
-        "is_commuter_heavy": False
+        "is_commuter_heavy": False,
+        "schedules": ["06:00", "09:30", "13:00", "16:00", "19:30"]
     },
     "ROUTE_104": {
         "name": "Central Hub - International Airport Express",
+        "origin": "Central Hub",
+        "destination": "International Airport",
         "type": "Airport",
+        "bus_type": "Airport_Coach",
         "distance_km": 55.0,
         "default_capacity": 40,
         "base_fare": 25.0,
         "duration_min": 65,
-        "is_commuter_heavy": False
+        "is_commuter_heavy": False,
+        "schedules": ["05:30", "07:00", "09:00", "11:00", "13:30", "15:30", "17:30", "19:30", "21:30"]
     },
     "ROUTE_105": {
         "name": "Metro Valley - Mountain Resort Weekend Express",
+        "origin": "Metro Valley",
+        "destination": "Mountain Resort",
         "type": "Tourist",
+        "bus_type": "HighCapacity_Scenic",
         "distance_km": 165.0,
         "default_capacity": 55,
         "base_fare": 38.0,
         "duration_min": 150,
-        "is_commuter_heavy": False
+        "is_commuter_heavy": False,
+        "schedules": ["08:00", "10:30", "13:30", "16:30", "19:00"]
     },
     "ROUTE_106": {
         "name": "Southern Suburb - Industrial District Feeder",
+        "origin": "Southern Suburb",
+        "destination": "Industrial District",
         "type": "Feeder",
+        "bus_type": "Standard_Feeder",
         "distance_km": 35.0,
         "default_capacity": 40,
         "base_fare": 10.0,
         "duration_min": 45,
-        "is_commuter_heavy": True
+        "is_commuter_heavy": True,
+        "schedules": ["06:45", "07:45", "08:45", "15:45", "16:45", "17:45"]
     }
 }
 

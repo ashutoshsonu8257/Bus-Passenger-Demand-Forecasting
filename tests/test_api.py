@@ -80,3 +80,9 @@ def test_batch_predict_endpoint():
     data = response.json()
     assert data["batch_size"] == 2
     assert len(data["forecasts"]) == 2
+
+def test_redbus_ui_endpoint():
+    response = client.get("/ui")
+    assert response.status_code == 200
+    assert "text/html" in response.headers["content-type"]
+    assert "busPulse" in response.text

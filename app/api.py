@@ -5,15 +5,20 @@ route catalog lookup, and model performance metrics.
 """
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone
 from contextlib import asynccontextmanager
+from pathlib import Path
 import json
 import pandas as pd
 
-from src.config import ROUTE_CONFIG, METRICS_SUMMARY_PATH, ROUTE_METRICS_PATH, PEAK_METRICS_PATH
+from src.config import ROUTE_CONFIG, METRICS_SUMMARY_PATH, ROUTE_METRICS_PATH, PEAK_METRICS_PATH, FIGURES_DIR
 from src.inference import get_forecaster
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -27,6 +32,14 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+
+if FIGURES_DIR.exists():
+    app.mount("/figures", StaticFiles(directory=str(FIGURES_DIR)), name="figures")
+
+@app.get("/ui", include_in_schema=False)
+def serve_redbus_ui():
+    """Serve the RedBus-style interactive web interface."""
+    return FileResponse(STATIC_DIR / "index.html")
 
 # Pydantic Request Models
 class TripForecastRequest(BaseModel):
