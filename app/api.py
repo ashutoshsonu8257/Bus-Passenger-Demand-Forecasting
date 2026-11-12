@@ -65,6 +65,7 @@ def root():
     return {
         "service": "Bus Passenger-Demand Forecasting API",
         "status": "online",
+        "ui_url": "/ui",
         "docs_url": "/docs",
         "description": "Decision-support machine learning interface for capacity-aware bus fleet scheduling."
     }

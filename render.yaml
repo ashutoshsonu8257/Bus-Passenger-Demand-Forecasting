@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: buspulse-demand-forecasting
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
